@@ -35,7 +35,7 @@ view:
 	objdump -Drl $(MAIN)
 
 gdb:
-	gdb -tui -x gdb_prerun $(MAIN)
+	gdb -tui -x $(MAIN)
 
 clean:
 	$(BANNER)
