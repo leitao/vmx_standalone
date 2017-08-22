@@ -1,7 +1,30 @@
-define z
-  i r r0 r3 r4 r6 r8 r9 r11 r12 vr1 vr2 vr3 vr4 vr5
+set confirm off
+layout split
+
+define args
+  i r r3 r4 r5 r6 r7
 end
 
-layout split
-break aes_p8_set_encrypt_key
-run
+define fp
+	x/32gx $r1
+end
+
+define encrypt
+	break aes_p8_encrypt
+	break aes_p8_decrypt
+	run
+	set $src = $r3
+	set $dst = $r4
+	set $enc = $r5
+	i r r3 r4 r5
+end
+
+define default
+	break main:36
+	break aes_p8_set_encrypt_key
+	break aes_p8_set_decrypt_key
+	break aes_p8_encrypt
+	break aes_p8_decrypt
+	break aesp8-ppc.S:135
+	run
+end
