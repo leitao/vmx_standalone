@@ -1,4 +1,0 @@
-source gdb_functions
-source gdb_breakpoints
-source gdb_b_functions
-run

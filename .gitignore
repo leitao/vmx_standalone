@@ -2,4 +2,4 @@
 *.o
 *.swp
 .nfs*
-aes
+run_*
