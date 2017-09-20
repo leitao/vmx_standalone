@@ -88,6 +88,9 @@ int main(int argc, char **argv) {
 	hexprint("plaintext", plaintext, text_size);
 	ChaCha20_ctr32_vmx(encrypted, plaintext, text_size, key, &counter);
 	hexprint("encrypted", encrypted, text_size);
+	memset((char *) plaintext, 0, 256);
+	ChaCha20_ctr32_vmx(plaintext, encrypted, text_size, key, &counter);
+	hexprint("plaintext", plaintext, text_size);
 
-	return 1;
+	return 0;
 }
