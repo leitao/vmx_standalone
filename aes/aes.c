@@ -6,7 +6,7 @@
 
 #define BLOCK 16
 
-char buffer[512];
+char buffer[1512];
 
 char *array2str(char *array, int size) {
 	int i;
@@ -40,6 +40,9 @@ int main(int argc, char **argv) {
 		0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34},{
 		0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
 		0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff}};
+	unsigned char iv[16] = {
+		0x12, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x45};
 
 	struct aes_key enc_key;
 	struct aes_key dec_key;
@@ -65,6 +68,11 @@ int main(int argc, char **argv) {
 
 		aes_p8_decrypt(encoded, decoded, &dec_key);
 		printf("string decoded:\n%s\n\n", array2str(decoded, BLOCK));
+
+		aes_p8_cbc_encrypt(txt[i], encoded, 16, &enc_key, iv, AES_ENCRYPT);
+		printf("aes_p8_cbc_encrypt encoded:\n%s\n\n", array2str(encoded, BLOCK));
+		aes_p8_cbc_encrypt(encoded, decoded, 16, &dec_key, iv, AES_DECRYPT);
+		printf("aes_p8_cbc_decrypt decoded (should be == string):\n%s\n\n", array2str(decoded, BLOCK));
 	}
 
 	return ret;

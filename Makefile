@@ -16,7 +16,10 @@ AES_OBJS = aes/aes.o aes/aesp8-ppc.o
 CHACHA = run_chacha20
 CHACHA_OBJS = chacha20/chacha.o chacha20/chacha-ppc.o
 
-all: $(AES) $(CHACHA)
+ECDSA = run_ecdsa
+ECDSA_OBJS = ecdsa/ecdsa.o ecdsa/ecp_nistz256-ppc64.o
+
+all: $(AES) $(CHACHA) $(ECDSA)
 
 $(AES): $(AES_OBJS)
 	$(BANNER)
@@ -25,6 +28,10 @@ $(AES): $(AES_OBJS)
 $(CHACHA): $(CHACHA_OBJS)
 	$(BANNER)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(CHACHA_OBJS) $(LFLAGS) $(LIBS)
+
+$(ECDSA): $(ECDSA_OBJS)
+	$(BANNER)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(ECDSA_OBJS) $(LFLAGS) $(LIBS)
 
 %.S: %.pl
 	$(BANNER)

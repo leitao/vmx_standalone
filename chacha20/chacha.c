@@ -46,27 +46,29 @@ char *array2str(char *array, int size) {
 	return buffer;
 }
 
+#define TEXT_SIZE 128
+
 int main(int argc, char **argv) {
 	uint32_t key[8] = {
 		0x03020100, 0x07060504, 0x0b0a0908, 0x0f0e0d0c,
 		0x13121110, 0x17161514, 0x1b1a1918, 0x1f1e1d1c};
 	uint32_t counter[4] = {
 		0x00000001, 0x09000000, 0x4a000000, 0x00000000};
-	uint8_t plaintext[256];
-	uint8_t encrypted[256];
+	uint8_t plaintext[TEXT_SIZE];
+	uint8_t encrypted[TEXT_SIZE];
 	uint32_t text_size;
 
-	memset((char *) plaintext, 0, 256);
-	memset((char *) encrypted, 0, 256);
+	memset((char *) plaintext, 0, TEXT_SIZE);
+	memset((char *) encrypted, 0, TEXT_SIZE);
 
 	/*sprintf((char *) plaintext, "Ladies and Gentlemen of the class of '99: If I could offer you only one tip for the future, sunscreen would be it.");*/
 	/*text_size = strlen((char *) plaintext);*/
-	text_size = 64;
+	text_size = TEXT_SIZE;
 
 	hexprint("plaintext", plaintext, text_size);
 	ChaCha20_ctr32_vmx(encrypted, plaintext, text_size, key, counter);
 	hexprint("encrypted", encrypted, text_size);
-	memset((char *) plaintext, 0, 256);
+	memset((char *) plaintext, 0, TEXT_SIZE);
 	ChaCha20_ctr32_vmx(plaintext, encrypted, text_size, key, counter);
 	hexprint("plaintext", plaintext, text_size);
 
