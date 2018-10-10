@@ -16,7 +16,10 @@ AES_OBJS = aes/aes.o aes/aesp8-ppc.o
 CHACHA = run_chacha20
 CHACHA_OBJS = chacha20/chacha.o chacha20/chacha-ppc.o
 
-all: $(AES) $(CHACHA)
+GHASH = run_ghash
+GHASH_OBJS = aes/aesp8-ppc.o ghash/ghash.o ghash/ghashp8-ppc.o
+
+all: $(AES) $(CHACHA) $(GHASH)
 
 $(AES): $(AES_OBJS)
 	$(BANNER)
@@ -25,6 +28,10 @@ $(AES): $(AES_OBJS)
 $(CHACHA): $(CHACHA_OBJS)
 	$(BANNER)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(CHACHA_OBJS) $(LFLAGS) $(LIBS)
+
+$(GHASH): $(GHASH_OBJS)
+	$(BANNER)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(GHASH_OBJS) $(LFLAGS) $(LIBS)
 
 %.S: %.pl
 	$(BANNER)
@@ -43,6 +50,6 @@ $(CHACHA): $(CHACHA_OBJS)
 
 clean:
 	$(BANNER)
-	$(RM) -f aes/*.o aes/*.S chacha20/*.o chacha20/*.S run_*
+	$(RM) -f aes/*.o aes/*.S chacha20/*.o chacha20/*.S ghash/*.o ghash/*.S run_* *.vgi *.qt
 
 .PRECIOUS: %.S
